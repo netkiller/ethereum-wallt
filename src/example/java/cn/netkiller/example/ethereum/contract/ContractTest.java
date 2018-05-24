@@ -1,4 +1,4 @@
-package cn.netkiller.ethereum;
+package cn.netkiller.example.ethereum.contract;
 
 import java.math.BigInteger;
 
@@ -9,7 +9,6 @@ import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.Contract;
 import org.web3j.tx.ManagedTransaction;
 
-import cn.netkiller.ethereum.contract.Netkiller;
 
 public class ContractTest {
 

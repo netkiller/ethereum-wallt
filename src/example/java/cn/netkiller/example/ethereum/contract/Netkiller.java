@@ -1,4 +1,4 @@
-package cn.netkiller.ethereum.contract;
+package cn.netkiller.example.ethereum.contract;
 
 import java.math.BigInteger;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package cn.netkiller.bitcoin.mnemonic;
+package cn.netkiller.example.bitcoin.mnemonic;
 
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.params.TestNet3Params;

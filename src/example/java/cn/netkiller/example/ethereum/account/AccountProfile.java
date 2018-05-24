@@ -1,4 +1,4 @@
-package cn.netkiller.ethereum.account;
+package cn.netkiller.example.ethereum.account;
 
 public class AccountProfile {
 	private String name;

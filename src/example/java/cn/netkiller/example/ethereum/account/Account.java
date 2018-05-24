@@ -1,4 +1,4 @@
-package cn.netkiller.ethereum.account;
+package cn.netkiller.example.ethereum.account;
 
 import java.io.IOException;
 import java.math.BigDecimal;

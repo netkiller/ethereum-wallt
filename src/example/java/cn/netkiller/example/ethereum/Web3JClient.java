@@ -1,4 +1,4 @@
-package cn.netkiller.ethereum;
+package cn.netkiller.example.ethereum;
 
 import java.io.IOException;
 

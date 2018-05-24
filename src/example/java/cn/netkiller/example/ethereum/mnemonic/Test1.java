@@ -1,4 +1,4 @@
-package cn.netkiller.ethereum.mnemonic;
+package cn.netkiller.example.ethereum.mnemonic;
 
 import java.io.IOException;
 import java.util.List;

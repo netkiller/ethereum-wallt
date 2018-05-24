@@ -1,4 +1,4 @@
-package cn.netkiller.ethereum.mnemonic;
+package cn.netkiller.example.ethereum.mnemonic;
 
 import java.math.BigInteger;
 import java.util.List;

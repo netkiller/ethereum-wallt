@@ -1,4 +1,4 @@
-package cn.netkiller.ethereum.infura;
+package cn.netkiller.example.ethereum.infura;
 
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.Web3ClientVersion;

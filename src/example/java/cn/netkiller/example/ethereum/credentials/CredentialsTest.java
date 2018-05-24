@@ -1,4 +1,4 @@
-package cn.netkiller.ethereum.credentials;
+package cn.netkiller.example.ethereum.credentials;
 
 import java.io.IOException;
 import java.math.BigInteger;

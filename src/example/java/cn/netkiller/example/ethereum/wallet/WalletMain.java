@@ -1,4 +1,4 @@
-package cn.netkiller.ethereum.wallet;
+package cn.netkiller.example.ethereum.wallet;
 
 import java.io.File;
 import java.io.IOException;
