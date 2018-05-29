@@ -28,6 +28,12 @@ public class HdWallet {
 		this.path = "M/44H/60H/0H/0/0";
 		this.passphrase = "";
 	}
+	
+	public HdWallet(String mnemonic, String passphrase) {
+		this.mnemonic = mnemonic;
+		this.path = "M/44H/60H/0H/0/0";
+		this.passphrase = passphrase;
+	}
 
 	public HdWallet(String mnemonic, String passphrase, String path) {
 		this.mnemonic = mnemonic;
@@ -39,7 +45,7 @@ public class HdWallet {
 		this.path = String.format("M/44H/60H/%sH/%s/%s", account, change, index);
 	}
 
-	public void generate() throws UnreadableWalletException {
+	public BigInteger generate() throws UnreadableWalletException {
 
 		long creationTimeSeconds = System.currentTimeMillis() / 1000;
 
@@ -53,6 +59,7 @@ public class HdWallet {
 		this.privateKey = privKey.toString(16);
 
 		this.publicKey = key.getPubKey().toString();
+		return privKey;
 
 	}
 

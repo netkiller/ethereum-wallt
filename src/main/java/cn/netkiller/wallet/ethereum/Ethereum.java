@@ -1,6 +1,7 @@
 package cn.netkiller.wallet.ethereum;
 
 import java.io.IOException;
+import java.math.BigInteger;
 
 import org.bitcoinj.wallet.UnreadableWalletException;
 import org.web3j.protocol.Web3j;
@@ -28,8 +29,8 @@ public class Ethereum {
 		String code = mnemonic.getMnemonic();
 		System.out.println(code);
 
-		HdWallet hdWallet = new HdWallet(code);
-		hdWallet.generate();
+		HdWallet hdWallet = new HdWallet(code, "netkiller");
+		BigInteger privateKeyBigInteger = hdWallet.generate();
 		String publicKey = hdWallet.getPublicKey();
 		String privateKey = hdWallet.getPrivateKey();
 		System.out.println(publicKey);
@@ -38,6 +39,7 @@ public class Ethereum {
 		Account account = new Account();
 		String address = account.getAddressFromPrivateKey(privateKey);
 		System.out.println(address);
+		account.exportKeystore(privateKeyBigInteger, "12345678", "/tmp");
 		// System.out.println(privateKey);
 	}
 }
