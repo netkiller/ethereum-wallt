@@ -1,4 +1,4 @@
-package cn.netkiller.security;
+package cn.netkiller.wallet.ethereum;
 
 import java.util.Base64;
 
@@ -7,9 +7,14 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class AES {
+
 	private static final String initVector = "BxsdTjVUNDQwRXNQ";
 	private String key;
-	
+
+	public AES() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public AES(String key) {
 		// TODO Auto-generated constructor stub
 		this.key = key;
@@ -54,18 +59,5 @@ public class AES {
 		}
 
 		return null;
-	}
-
-	public static void main(String[] args) {
-		// key 长度16个字节
-		String key = "www.netkiller.cn";
-
-		System.out.println(key.length());
-		AES aes = new AES(key);
-		String en = aes.encrypt("Helloworld!!!");
-		String de = aes.decrypt(en);
-		System.out.println(en);
-		System.out.println(de);
-
 	}
 }

@@ -1,4 +1,4 @@
-package cn.netkiller.wallet.ethereum;
+package cn.netkiller.example.ethereum.mnemonic;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,27 +17,7 @@ import org.bitcoinj.wallet.DeterministicSeed;
 import org.bitcoinj.wallet.UnreadableWalletException;
 import org.web3j.crypto.Credentials;
 
-public class Mnemonic {
-	private String passphrase;
-
-	public Mnemonic() {
-		this.passphrase = "";
-
-	}
-
-	public Mnemonic(String passphrase) {
-		if (passphrase != null) {
-			this.passphrase = passphrase;
-		}
-	}
-
-	public String getMnemonic() {
-		SecureRandom secureRandom = new SecureRandom();
-		long creationTimeSeconds = System.currentTimeMillis() / 1000;
-		DeterministicSeed deterministicSeed = new DeterministicSeed(secureRandom, 128, this.passphrase, creationTimeSeconds);
-		List<String> mnemonicCode = deterministicSeed.getMnemonicCode();
-		return (String.join(" ", mnemonicCode));
-	}
+public class MnemonicChinese {
 
 	public static void main(String[] args) throws UnreadableWalletException, IOException, MnemonicLengthException {
 		// TODO Auto-generated method stub
@@ -47,7 +27,7 @@ public class Mnemonic {
 		// System.out.println(split);
 
 		SecureRandom secureRandom = new SecureRandom();
-		byte[] entropy = new byte[20];
+		byte[] entropy = new byte[16];
 		secureRandom.nextBytes(entropy);
 
 		MnemonicCode mc = new MnemonicCode();
@@ -55,10 +35,10 @@ public class Mnemonic {
 		String englist = String.join(" ", split);
 		System.out.println(englist);
 
-		InputStream stream = Mnemonic.class.getResourceAsStream("netkiller_mnemonic.txt");
+//		 InputStream stream = MnemonicChinese.class.getResourceAsStream("netkiller_mnemonic.txt");
 
-		// InputStream stream = new FileInputStream("mnemonic/wordlist/chinese_simplified.txt");
-		// InputStream stream = new FileInputStream("/tmp/netkiller.txt");
+		 InputStream stream = new FileInputStream("mnemonic/wordlist/chinese_simplified.txt");
+//		InputStream stream = new FileInputStream("/tmp/netkiller.txt");
 		MnemonicCode chinese = new MnemonicCode(stream, null);
 
 		final List<String> mnemonic = chinese.toMnemonic(entropy);
@@ -66,7 +46,7 @@ public class Mnemonic {
 
 		long creationTimeSeconds = System.currentTimeMillis() / 1000;
 		DeterministicSeed seed = new DeterministicSeed(mnemonic, null, "", creationTimeSeconds);
-
+		System.out.println(String.join(" ", seed.getMnemonicCode()));
 		DeterministicKeyChain chain = DeterministicKeyChain.builder().seed(seed).build();
 		List<ChildNumber> keyPath = HDUtils.parsePath("M/44H/60H/0H/0/0");
 		DeterministicKey key = chain.getKeyByPath(keyPath, true);
@@ -76,9 +56,7 @@ public class Mnemonic {
 		Credentials credentials = Credentials.create(privateKey);
 		String address = credentials.getAddress();
 
-		System.out.println("汉字助记词：" + String.join(" ", seed.getMnemonicCode()));
-		System.out.println("地址：" + address);
-		System.out.println("私钥：" + privateKey);
-
+		System.out.println(privateKey);
+		System.out.println(address);
 	}
 }
