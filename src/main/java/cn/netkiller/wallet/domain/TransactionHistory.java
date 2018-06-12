@@ -29,6 +29,7 @@ public class TransactionHistory implements Serializable {
 	private String contractAddress;
 	private String gasUsed;
 	private String symbol;
+	private int decimals;
 
 	public TransactionHistory() {
 		// TODO Auto-generated constructor stub
@@ -132,6 +133,14 @@ public class TransactionHistory implements Serializable {
 
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
+	}
+
+	public int getDecimals() {
+		return decimals;
+	}
+
+	public void setDecimals(int decimals) {
+		this.decimals = decimals;
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -40,12 +41,15 @@ public class TestRestController {
 	@Autowired
 	TokenRepository tokenRepository;
 
+	@Value("${ethereum.developer.apis}")
+	private String ethereumDeveloperApis;
+
 	public TestRestController() {
 		// TODO Auto-generated constructor stub
 		Token token = new Token();
 		token.setName("Enterprise Token Ecosystem (ETE)");
 		token.setSymbol("ETE");
-		token.setDecimals("5");
+		token.setDecimals(5);
 		token.setContractAddress("0x6333050c7a025027b51a8039cbafd2584933299d");
 
 		// tokenRepository.save(token);
@@ -54,14 +58,16 @@ public class TestRestController {
 
 	@GetMapping("/transaction/refresh/{address}")
 	public String refresh(@PathVariable String address) {
-		this.syncTransaction(address);
+
 		return "ok";
 	}
 
 	@GetMapping("/transaction/{address}")
 	public Page<TransactionHistory> transaction(@PathVariable String address, @PageableDefault(sort = { "block_number" }) Pageable pageable) {
 		Page<TransactionHistory> transactionHistory;
-
+		int pageNumber = pageable.getPageNumber();
+		System.out.println(pageNumber);
+		this.syncTransaction(address);
 		transactionHistory = transactionHistoryRepository.findEthByAddress(address, pageable);
 
 		return transactionHistory;
@@ -70,7 +76,7 @@ public class TestRestController {
 	@GetMapping("/transaction/{address}/{symbol}")
 	public Page<TransactionHistory> transactionToken(@PathVariable String address, @PathVariable String symbol, @PageableDefault(sort = { "block_number" }) Pageable pageable) {
 		Page<TransactionHistory> transactionHistory;
-
+		this.syncTokenTransaction(address);
 		transactionHistory = transactionHistoryRepository.findTokenByAddressAndContactAddress(address, symbol, pageable);
 
 		return transactionHistory;
@@ -85,9 +91,13 @@ public class TestRestController {
 		String endblock = (this.getBlockNumber());
 		if (transactionPostion == null) {
 			transactionPostion = new TransactionPostion();
+			transactionPostion.setAddress(address);
+			transactionPostion.setEthPostion(0);
+			transactionPostion.setTokenPostion(0);
+
 			startblock = "0";
 		} else {
-			startblock = String.valueOf(transactionPostion.getPostion());
+			startblock = String.valueOf(transactionPostion.getEthPostion() + 1);
 		}
 
 		TransactionResponse transactionsResponse = this.getTransactions(startblock, endblock, address);
@@ -111,10 +121,31 @@ public class TestRestController {
 					transactionHistoryRepository.save(transactionHistory);
 				}
 			}
-			transactionPostion.setAddress(address);
-			transactionPostion.setPostion(Integer.valueOf(endblock));
+
+			transactionPostion.setEthPostion(Integer.valueOf(endblock));
 			transactionPostionRepository.save(transactionPostion);
 		}
+
+	}
+
+	private void syncTokenTransaction(String address) {
+		TransactionPostion transactionPostion = transactionPostionRepository.findOneByAddress(address);
+
+		System.out.println("POSTION: " + transactionPostion);
+
+		String startblock;
+		String endblock = (this.getBlockNumber());
+		if (transactionPostion == null) {
+			transactionPostion = new TransactionPostion();
+			transactionPostion.setAddress(address);
+			transactionPostion.setEthPostion(0);
+			transactionPostion.setTokenPostion(0);
+			startblock = "0";
+		} else {
+			startblock = String.valueOf(transactionPostion.getTokenPostion() + 1);
+		}
+
+		transactionPostion.setAddress(address);
 
 		TokenTransactionResponse tokenTransactionResponse = this.getTokenTransactions(startblock, endblock, address);
 		if (tokenTransactionResponse.getStatus().equals("1")) {
@@ -133,14 +164,17 @@ public class TestRestController {
 				transactionHistory.setTimeStamp(token.getTimeStamp());
 				transactionHistory.setValue(token.getValue());
 				transactionHistory.setContractAddress(token.getContractAddress());
+				transactionHistory.setDecimals(Integer.valueOf(token.getTokenDecimal()));
 				transactionHistoryRepository.save(transactionHistory);
 			}
+			transactionPostion.setTokenPostion(Integer.valueOf(endblock));
+			transactionPostionRepository.save(transactionPostion);
 		}
 
 	}
 
 	private TransactionResponse getTransactions(String startblock, String endblock, String address) {
-		final String url = "http://api.etherscan.io/api?module={module}&action={action}&address={address}&startblock={startblock}&endblock={endblock}&sort={sort}&apikey={apikey}";
+		final String url = ethereumDeveloperApis + "/api?module={module}&action={action}&address={address}&startblock={startblock}&endblock={endblock}&sort={sort}&apikey={apikey}";
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("module", "account");
 		params.put("action", "txlist");
@@ -157,7 +191,7 @@ public class TestRestController {
 	}
 
 	private String getBlockNumber() {
-		final String url = "https://api.etherscan.io/api?module=proxy&action=eth_blockNumber&apikey=RT5JW37AKEZVSW3C91Z86IGI2FF7JDPF1N";
+		final String url = ethereumDeveloperApis + "/api?module={module}&action={action}&apikey={apikey}";
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("module", "proxy");
 		params.put("action", "eth_blockNumber");
@@ -170,7 +204,7 @@ public class TestRestController {
 
 	private TokenTransactionResponse getTokenTransactions(String startblock, String endblock, String address) {
 
-		final String url = "http://api.etherscan.io/api?module={module}&action={action}&address={address}&startblock={startblock}&endblock={endblock}&sort={sort}&apikey={apikey}";
+		final String url = ethereumDeveloperApis + "/api?module={module}&action={action}&address={address}&startblock={startblock}&endblock={endblock}&sort={sort}&apikey={apikey}";
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("module", "account");
 		params.put("action", "tokentx");

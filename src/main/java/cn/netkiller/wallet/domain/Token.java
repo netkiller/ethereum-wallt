@@ -13,7 +13,7 @@ public class Token {
 	private String contractAddress;
 	private String name;
 	private String symbol;
-	private String decimals;
+	private int decimals;
 
 	public Token() {
 		// TODO Auto-generated constructor stub
@@ -43,11 +43,11 @@ public class Token {
 		this.symbol = symbol;
 	}
 
-	public String getDecimals() {
+	public int getDecimals() {
 		return decimals;
 	}
 
-	public void setDecimals(String decimals) {
+	public void setDecimals(int decimals) {
 		this.decimals = decimals;
 	}
 

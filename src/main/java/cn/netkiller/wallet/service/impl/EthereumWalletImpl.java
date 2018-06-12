@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import cn.netkiller.wallet.ethereum.Ethereum;
+import cn.netkiller.wallet.ethereum.Token;
+import cn.netkiller.wallet.pojo.TokenResponse;
 import cn.netkiller.wallet.service.EthereumWallet;
 
 @Service
@@ -24,6 +26,16 @@ public class EthereumWalletImpl implements EthereumWallet {
 
 	public String getUrl() {
 		return this.url;
+	}
+
+	public TokenResponse getToken(String contractAddress) {
+		Token token = new Token(this.url);
+		TokenResponse tokenResponse = new TokenResponse();
+		tokenResponse.setName(token.getName());
+		tokenResponse.setSymbol(token.getSymbol());
+		tokenResponse.setDecimals(token.getDecimals());
+		tokenResponse.setContractAddress(contractAddress);
+		return tokenResponse;
 	}
 
 }

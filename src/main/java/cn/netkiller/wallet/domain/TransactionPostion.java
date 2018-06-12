@@ -10,7 +10,8 @@ public class TransactionPostion {
 
 	@Id
 	private String address;
-	private int postion;
+	private int ethPostion = 0;
+	private int TokenPostion = 0;
 
 	public String getAddress() {
 		return address;
@@ -20,17 +21,25 @@ public class TransactionPostion {
 		this.address = address;
 	}
 
-	public int getPostion() {
-		return postion;
+	public int getEthPostion() {
+		return ethPostion;
 	}
 
-	public void setPostion(int postion) {
-		this.postion = postion;
+	public void setEthPostion(int ethPostion) {
+		this.ethPostion = ethPostion;
+	}
+
+	public int getTokenPostion() {
+		return TokenPostion;
+	}
+
+	public void setTokenPostion(int tokenPostion) {
+		TokenPostion = tokenPostion;
 	}
 
 	@Override
 	public String toString() {
-		return "TransactionsPostion [address=" + address + ", postion=" + postion + "]";
+		return "TransactionPostion [address=" + address + ", ethPostion=" + ethPostion + ", TokenPostion=" + TokenPostion + "]";
 	}
 
 }

@@ -19,11 +19,13 @@ import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
+import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.EthCall;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Numeric;
 
 public class Token extends Ethereum {
@@ -32,6 +34,10 @@ public class Token extends Ethereum {
 	private String privateKey = null;
 	// private BigInteger gasLimit = BigInteger.ZERO;
 	private BigInteger gasPrice = BigInteger.ZERO;
+
+	public Token(String url) {
+		web3 = Web3j.build(new HttpService(url));
+	}
 
 	public Token(String contractAddress, String privateKey) throws IOException {
 		this.contractAddress = contractAddress;
@@ -80,7 +86,10 @@ public class Token extends Ethereum {
 		try {
 			ethCall = web3.ethCall(transaction, DefaultBlockParameterName.LATEST).sendAsync().get();
 			List<Type> results = FunctionReturnDecoder.decode(ethCall.getValue(), function.getOutputParameters());
-			name = results.get(0).getValue().toString();
+			System.out.println(results.size());
+			if (results.size() > 0) {
+				name = results.get(0).getValue().toString();
+			}
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
@@ -107,7 +116,9 @@ public class Token extends Ethereum {
 		try {
 			ethCall = web3.ethCall(transaction, DefaultBlockParameterName.LATEST).sendAsync().get();
 			List<Type> results = FunctionReturnDecoder.decode(ethCall.getValue(), function.getOutputParameters());
-			symbol = results.get(0).getValue().toString();
+			if (results.size() > 0) {
+				symbol = results.get(0).getValue().toString();
+			}
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
@@ -133,7 +144,9 @@ public class Token extends Ethereum {
 		try {
 			ethCall = web3.ethCall(transaction, DefaultBlockParameterName.LATEST).sendAsync().get();
 			List<Type> results = FunctionReturnDecoder.decode(ethCall.getValue(), function.getOutputParameters());
-			decimal = Integer.parseInt(results.get(0).getValue().toString());
+			if (results.size() > 0) {
+				decimal = Integer.parseInt(results.get(0).getValue().toString());
+			}
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
