@@ -30,6 +30,7 @@ public class EthereumWalletImpl implements EthereumWallet {
 
 	public TokenResponse getToken(String contractAddress) {
 		Token token = new Token(this.url);
+		token.setContractAddress(contractAddress);
 		TokenResponse tokenResponse = new TokenResponse();
 		tokenResponse.setName(token.getName());
 		tokenResponse.setSymbol(token.getSymbol());

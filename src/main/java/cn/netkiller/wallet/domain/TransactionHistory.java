@@ -16,6 +16,7 @@ public class TransactionHistory implements Serializable {
 	@Id
 	@Column(name = "blockNumber", unique = true, nullable = false, insertable = true, updatable = false)
 	private int blockNumber;
+	@Column(name = "timestamp")
 	private String timeStamp;
 	private String hash;
 	@Column(name = "from_address")
@@ -28,6 +29,7 @@ public class TransactionHistory implements Serializable {
 	private String isError;
 	private String contractAddress;
 	private String gasUsed;
+	private String name;
 	private String symbol;
 	private int decimals;
 
@@ -127,6 +129,14 @@ public class TransactionHistory implements Serializable {
 		return serialVersionUID;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getSymbol() {
 		return symbol;
 	}
@@ -145,7 +155,7 @@ public class TransactionHistory implements Serializable {
 
 	@Override
 	public String toString() {
-		return "TransactionHistory [blockNumber=" + blockNumber + ", timeStamp=" + timeStamp + ", hash=" + hash + ", from=" + from + ", to=" + to + ", value=" + value + ", gas=" + gas + ", gasPrice=" + gasPrice + ", isError=" + isError + ", contractAddress=" + contractAddress + ", gasUsed=" + gasUsed + ", symbol=" + symbol + "]";
+		return "TransactionHistory [blockNumber=" + blockNumber + ", timeStamp=" + timeStamp + ", hash=" + hash + ", from=" + from + ", to=" + to + ", value=" + value + ", gas=" + gas + ", gasPrice=" + gasPrice + ", isError=" + isError + ", contractAddress=" + contractAddress + ", gasUsed=" + gasUsed + ", name=" + name + ", symbol=" + symbol + ", decimals=" + decimals + "]";
 	}
 
 }

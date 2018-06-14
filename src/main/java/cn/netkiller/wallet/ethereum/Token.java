@@ -1,6 +1,7 @@
 package cn.netkiller.wallet.ethereum;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
@@ -35,8 +36,27 @@ public class Token extends Ethereum {
 	// private BigInteger gasLimit = BigInteger.ZERO;
 	private BigInteger gasPrice = BigInteger.ZERO;
 
+	public Token() {
+	}
+
 	public Token(String url) {
 		web3 = Web3j.build(new HttpService(url));
+	}
+
+	public String getContractAddress() {
+		return contractAddress;
+	}
+
+	public void setContractAddress(String contractAddress) {
+		this.contractAddress = contractAddress;
+	}
+
+	public String getPrivateKey() {
+		return privateKey;
+	}
+
+	public void setPrivateKey(String privateKey) {
+		this.privateKey = privateKey;
 	}
 
 	public Token(String contractAddress, String privateKey) throws IOException {
@@ -86,7 +106,6 @@ public class Token extends Ethereum {
 		try {
 			ethCall = web3.ethCall(transaction, DefaultBlockParameterName.LATEST).sendAsync().get();
 			List<Type> results = FunctionReturnDecoder.decode(ethCall.getValue(), function.getOutputParameters());
-			System.out.println(results.size());
 			if (results.size() > 0) {
 				name = results.get(0).getValue().toString();
 			}
@@ -301,45 +320,17 @@ public class Token extends Ethereum {
 		return txHash;
 	}
 
+	public BigDecimal formatBalance(BigInteger balance, int decimal) {
+		BigDecimal value = new BigDecimal(balance);
+		value = value.divide(BigDecimal.TEN.pow(decimal));
+		return value;
+	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		try {
-			Token token = new Token("0xb3cedc76e75fcd278c988b22963c2f35c99c10b7", "166970EC717B3ECCADABF68AC066558537228DB022FFBDE13A06790967F2BC3A");
-			String owner = token.getOwner();
-			System.out.println("代币创建者：" + owner);
-
-			String name = token.getName();
-			System.out.println("代币名称：" + name);
-
-			String symbol = token.getSymbol();
-			System.out.println("代币符号：" + symbol);
-
-			int decimal = token.getDecimals();
-			System.out.println("小数位数：" + decimal);
-
-			BigInteger totalSupply = token.getTotalSupply();
-			System.out.println("发行总量：" + totalSupply);
-
-			BigInteger tokenBalance = token.getTokenBalance("0x22c57F0537414FD95b9f0f08f1E51d8b96F14029");
-			System.out.println("代币余额:" + tokenBalance);
-
-			String txhash = token.sendTransaction("0xCdF0253d8362d6c3334c8F28A6BFd74c90d03d92", BigInteger.valueOf(10));
-			System.out.println("代币转账：" + txhash);
-
-			String hash = token.setApprove("0xCdF0253d8362d6c3334c8F28A6BFd74c90d03d92", BigInteger.valueOf(100));
-			System.out.println("设置授信：" + hash);
-
-			BigInteger value = token.getAllowance("0x22c57F0537414FD95b9f0f08f1E51d8b96F14029", "0xCdF0253d8362d6c3334c8F28A6BFd74c90d03d92");
-			System.out.println("查询授信：" + value);
-
-			Token token1 = new Token("0xb3cedc76e75fcd278c988b22963c2f35c99c10b7", "8D160BFB1B98C184121D63C3F668E63CC04CEE44C31D985A6FB37195D189675E");
-			System.out.println("授信转出：" + token1.sendTransactionFrom("0x22c57F0537414FD95b9f0f08f1E51d8b96F14029", "0xCdF0253d8362d6c3334c8F28A6BFd74c90d03d92", BigInteger.valueOf(20)));
-
-			// System.out.println(token1.getAllowance("0x22c57F0537414FD95b9f0f08f1E51d8b96F14029", "0xCdF0253d8362d6c3334c8F28A6BFd74c90d03d92"));
-		} catch (InterruptedException | ExecutionException | IOException e) {
-			e.printStackTrace();
-
-		}
+//		Token token = new Token();
+//		BigDecimal val = token.formatBalance(BigInteger.valueOf(1000200), 4);
+//		System.out.println(val);
 	}
 
 }
