@@ -8,7 +8,7 @@ import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.Utf8String;
 
-public class NetkillerAdvancedToken extends Token {
+public class NetkillerAdvancedToken extends EthereumToken {
 
 	public NetkillerAdvancedToken(String contractAddress, String privateKey) throws IOException {
 		super(contractAddress, privateKey);

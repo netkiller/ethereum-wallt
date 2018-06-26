@@ -45,14 +45,6 @@ public class HistoryRestController {
 
 	public HistoryRestController() {
 		// TODO Auto-generated constructor stub
-		// Token token = new Token();
-		// token.setName("Enterprise Token Ecosystem (ETE)");
-		// token.setSymbol("ETE");
-		// token.setDecimals(5);
-		// token.setContractAddress("0x6333050c7a025027b51a8039cbafd2584933299d");
-
-		// tokenRepository.save(token);
-
 	}
 
 	@GetMapping("/transaction/refresh/{address}")

@@ -16,6 +16,8 @@ public class UserToken {
 	private String name;
 	private String symbol;
 	private int decimals;
+	
+	private boolean status;
 
 	public UserToken() {
 		// TODO Auto-generated constructor stub
@@ -51,6 +53,14 @@ public class UserToken {
 
 	public void setDecimals(int decimals) {
 		this.decimals = decimals;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 	@Override

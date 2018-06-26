@@ -3,6 +3,7 @@ package cn.netkiller.wallet.ethereum;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -29,21 +30,21 @@ import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Numeric;
 
-public class Token extends Ethereum {
+public class EthereumToken extends Ethereum {
 
 	private String contractAddress = null;
 	private String privateKey = null;
 	// private BigInteger gasLimit = BigInteger.ZERO;
 	private BigInteger gasPrice = BigInteger.ZERO;
 
-	public Token() {
+	public EthereumToken() {
 	}
 
-	public Token(Web3j web3j) {
+	public EthereumToken(Web3j web3j) {
 		web3 = web3j;
 	}
 
-	public Token(String url) {
+	public EthereumToken(String url) {
 		web3 = Web3j.build(new HttpService(url));
 	}
 
@@ -63,7 +64,7 @@ public class Token extends Ethereum {
 		this.privateKey = privateKey;
 	}
 
-	public Token(String contractAddress, String privateKey) throws IOException {
+	public EthereumToken(String contractAddress, String privateKey) throws IOException {
 		this.contractAddress = contractAddress;
 		this.privateKey = privateKey;
 		// this.gasLimit = Convert.toWei(BigDecimal.valueOf(21000), Convert.Unit.WEI).toBigInteger();
@@ -324,10 +325,17 @@ public class Token extends Ethereum {
 		return txHash;
 	}
 
-	public BigDecimal formatBalance(BigInteger balance, int decimal) {
+	public BigDecimal toBigDecimal(BigInteger balance, int decimal) {
 		BigDecimal value = new BigDecimal(balance);
 		value = value.divide(BigDecimal.TEN.pow(decimal));
 		return value;
+	}
+
+	public BigInteger toBigInteger(BigDecimal value, int decimal) {
+		// BigDecimal balance = new BigDecimal(value);
+		BigInteger amount = value.multiply(BigDecimal.TEN.pow(decimal)).setScale(0, RoundingMode.DOWN).toBigInteger();
+		return amount;
+
 	}
 
 	public static void main(String[] args) {

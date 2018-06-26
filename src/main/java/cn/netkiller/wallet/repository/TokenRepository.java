@@ -8,4 +8,6 @@ import cn.netkiller.wallet.domain.Token;
 @Repository
 public interface TokenRepository extends CrudRepository<Token, Integer> {
 
+	Token findOneByContractAddress(String contractAddress);
+
 }

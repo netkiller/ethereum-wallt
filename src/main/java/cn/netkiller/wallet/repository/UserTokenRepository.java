@@ -18,4 +18,6 @@ public interface UserTokenRepository extends JpaRepository<UserToken, UserTokenP
 
 	@Query("select ut from UserToken ut where ut.primaryKey.address=:address and ut.primaryKey.contractAddress=:contractAddress")
 	List<UserToken> findByPrimaryKey(@Param("address") String address, @Param("contractAddress") String contractAddress);
+
+	List<UserToken> findAllByPrimaryKeyAddress(String address);
 }

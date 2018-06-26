@@ -107,6 +107,10 @@ public class Ethereum {
 		return transactionHash;
 	}
 
+	public String toEth(BigInteger amount) {
+		return Convert.fromWei(amount.toString(), Convert.Unit.ETHER).toPlainString();
+	}
+
 	// private static void decodeMessage(String signedData) {
 	//
 	// try {
