@@ -7,5 +7,7 @@ public interface EthereumWallet {
 	String getUrl();
 
 	TokenResponse getToken(String contractAddress);
+	
+	public void addToken(String address, String contractAddress);
 
 }

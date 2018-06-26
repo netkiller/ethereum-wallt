@@ -39,6 +39,10 @@ public class Token extends Ethereum {
 	public Token() {
 	}
 
+	public Token(Web3j web3j) {
+		web3 = web3j;
+	}
+
 	public Token(String url) {
 		web3 = Web3j.build(new HttpService(url));
 	}
@@ -328,9 +332,9 @@ public class Token extends Ethereum {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-//		Token token = new Token();
-//		BigDecimal val = token.formatBalance(BigInteger.valueOf(1000200), 4);
-//		System.out.println(val);
+		// Token token = new Token();
+		// BigDecimal val = token.formatBalance(BigInteger.valueOf(1000200), 4);
+		// System.out.println(val);
 	}
 
 }

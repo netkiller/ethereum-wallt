@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import cn.netkiller.wallet.domain.Token;
 import cn.netkiller.wallet.domain.TransactionHistory;
 import cn.netkiller.wallet.domain.TransactionPostion;
 import cn.netkiller.wallet.pojo.JsonRpc;
@@ -24,9 +23,9 @@ import cn.netkiller.wallet.pojo.TokenTransaction;
 import cn.netkiller.wallet.pojo.TokenTransactionResponse;
 import cn.netkiller.wallet.pojo.Transaction;
 import cn.netkiller.wallet.pojo.TransactionResponse;
-import cn.netkiller.wallet.repository.TokenRepository;
 import cn.netkiller.wallet.repository.TransactionHistoryRepository;
 import cn.netkiller.wallet.repository.TransactionPostionRepository;
+import cn.netkiller.wallet.service.EthereumWallet;
 
 @RestController
 public class HistoryRestController {
@@ -38,19 +37,19 @@ public class HistoryRestController {
 	@Autowired
 	TransactionPostionRepository transactionPostionRepository;
 
-	@Autowired
-	TokenRepository tokenRepository;
-
 	@Value("${ethereum.developer.apis}")
 	private String ethereumDeveloperApis;
 
+	@Autowired
+	private EthereumWallet ethereumWallet;
+
 	public HistoryRestController() {
 		// TODO Auto-generated constructor stub
-		Token token = new Token();
-		token.setName("Enterprise Token Ecosystem (ETE)");
-		token.setSymbol("ETE");
-		token.setDecimals(5);
-		token.setContractAddress("0x6333050c7a025027b51a8039cbafd2584933299d");
+		// Token token = new Token();
+		// token.setName("Enterprise Token Ecosystem (ETE)");
+		// token.setSymbol("ETE");
+		// token.setDecimals(5);
+		// token.setContractAddress("0x6333050c7a025027b51a8039cbafd2584933299d");
 
 		// tokenRepository.save(token);
 
@@ -58,7 +57,7 @@ public class HistoryRestController {
 
 	@GetMapping("/transaction/refresh/{address}")
 	public String refresh(@PathVariable String address) {
-
+		this.syncTokenTransactionHistory(address);
 		return "ok";
 	}
 
@@ -67,8 +66,8 @@ public class HistoryRestController {
 		Page<TransactionHistory> transactionHistory;
 		int pageNumber = pageable.getPageNumber();
 		System.out.println(pageNumber);
-		this.syncTransaction(address);
-		transactionHistory = transactionHistoryRepository.findEthByAddress(address, pageable);
+		this.syncTransactionHistory(address);
+		transactionHistory = transactionHistoryRepository.findByAddressAndContractAddressIsNull(address, pageable);
 
 		return transactionHistory;
 	}
@@ -76,13 +75,13 @@ public class HistoryRestController {
 	@GetMapping("/transaction/{address}/{symbol}")
 	public Page<TransactionHistory> transactionToken(@PathVariable String address, @PathVariable String symbol, @PageableDefault(sort = { "block_number" }) Pageable pageable) {
 		Page<TransactionHistory> transactionHistory;
-		this.syncTokenTransaction(address);
+		this.syncTokenTransactionHistory(address);
 		transactionHistory = transactionHistoryRepository.findTokenByAddressAndContactAddress(address, symbol, pageable);
 
 		return transactionHistory;
 	}
 
-	private void syncTransaction(String address) {
+	private void syncTransactionHistory(String address) {
 		TransactionPostion transactionPostion = transactionPostionRepository.findOneByAddress(address);
 
 		System.out.println("POSTION: " + transactionPostion);
@@ -100,7 +99,7 @@ public class HistoryRestController {
 			startblock = String.valueOf(transactionPostion.getEthPostion() + 1);
 		}
 
-		TransactionResponse transactionsResponse = this.getTransactions(startblock, endblock, address);
+		TransactionResponse transactionsResponse = this.getTransactionsHistory(startblock, endblock, address);
 		if (transactionsResponse.getStatus().equals("1")) {
 			List<Transaction> transactions = transactionsResponse.getResult();
 			for (Transaction transaction : transactions) {
@@ -128,7 +127,7 @@ public class HistoryRestController {
 
 	}
 
-	private void syncTokenTransaction(String address) {
+	private void syncTokenTransactionHistory(String address) {
 		TransactionPostion transactionPostion = transactionPostionRepository.findOneByAddress(address);
 
 		System.out.println("POSTION: " + transactionPostion);
@@ -147,7 +146,7 @@ public class HistoryRestController {
 
 		transactionPostion.setAddress(address);
 
-		TokenTransactionResponse tokenTransactionResponse = this.getTokenTransactions(startblock, endblock, address);
+		TokenTransactionResponse tokenTransactionResponse = this.getTokenTransactionsHistory(startblock, endblock, address);
 		if (tokenTransactionResponse.getStatus().equals("1")) {
 			List<TokenTransaction> tokenTransactions = tokenTransactionResponse.getResult();
 			for (TokenTransaction token : tokenTransactions) {
@@ -166,6 +165,8 @@ public class HistoryRestController {
 				transactionHistory.setContractAddress(token.getContractAddress());
 				transactionHistory.setDecimals(Integer.valueOf(token.getTokenDecimal()));
 				transactionHistoryRepository.save(transactionHistory);
+
+				ethereumWallet.addToken(address, token.getContractAddress());
 			}
 			transactionPostion.setTokenPostion(Integer.valueOf(endblock));
 			transactionPostionRepository.save(transactionPostion);
@@ -173,7 +174,7 @@ public class HistoryRestController {
 
 	}
 
-	private TransactionResponse getTransactions(String startblock, String endblock, String address) {
+	private TransactionResponse getTransactionsHistory(String startblock, String endblock, String address) {
 		final String url = ethereumDeveloperApis + "/api?module={module}&action={action}&address={address}&startblock={startblock}&endblock={endblock}&sort={sort}&apikey={apikey}";
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("module", "account");
@@ -202,7 +203,7 @@ public class HistoryRestController {
 		return Integer.valueOf(result.getResult().substring(2), 16).toString();
 	}
 
-	private TokenTransactionResponse getTokenTransactions(String startblock, String endblock, String address) {
+	private TokenTransactionResponse getTokenTransactionsHistory(String startblock, String endblock, String address) {
 
 		final String url = ethereumDeveloperApis + "/api?module={module}&action={action}&address={address}&startblock={startblock}&endblock={endblock}&sort={sort}&apikey={apikey}";
 		Map<String, String> params = new HashMap<String, String>();

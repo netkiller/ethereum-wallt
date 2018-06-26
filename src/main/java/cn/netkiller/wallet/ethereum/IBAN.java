@@ -5,13 +5,13 @@ import static java.lang.Integer.parseInt;
 
 public class IBAN {
 
-	static class Iban {
-		private String ibanAddress;
+	public static class Iban {
+		private String address;
 		private String token;
 		private String amount;
 
-		public Iban(String ibanAddress, String token, String amount) {
-			this.ibanAddress = ibanAddress;
+		public Iban(String address, String token, String amount) {
+			this.address = address;
 			this.token = token;
 			this.amount = amount;
 		}
@@ -20,8 +20,8 @@ public class IBAN {
 			return amount;
 		}
 
-		public String getIbanAddress() {
-			return ibanAddress;
+		public String getAddress() {
+			return address;
 		}
 
 		public String getToken() {
@@ -32,8 +32,8 @@ public class IBAN {
 			this.amount = amount;
 		}
 
-		public void setIbanAddress(String ibanAddress) {
-			this.ibanAddress = ibanAddress;
+		public void setAddress(String address) {
+			this.address = address;
 		}
 
 		public void setToken(String token) {
@@ -42,7 +42,7 @@ public class IBAN {
 
 		@Override
 		public String toString() {
-			return "Iban [ibanAddress=" + ibanAddress + ", token=" + token + ", amount=" + amount + "]";
+			return "Iban [address=" + address + ", token=" + token + ", amount=" + amount + "]";
 		}
 	}
 
@@ -66,7 +66,7 @@ public class IBAN {
 		// TODO Auto-generated constructor stub
 	}
 
-	private Iban decode(String result) {
+	public Iban decode(String result) {
 		int ibanEndpoint = result.indexOf("?");
 		String iban = result.substring(5, ibanEndpoint < 0 ? result.length() : ibanEndpoint);
 		String address = this.toAddress(iban);
@@ -86,7 +86,7 @@ public class IBAN {
 		return new Iban(address, token, amount);
 	}
 
-	public String encode(String address, String token, String amount) {
+	public String encode(String address, String token, String amount) throws Exception {
 		return String.format("iban:%s?token=%s&amount=%s", this.toIban(address), token, amount);
 	}
 
@@ -99,7 +99,10 @@ public class IBAN {
 		return "0x" + base16.toString().toLowerCase();
 	}
 
-	public String toIban(String address) {
+	public String toIban(String address) throws Exception {
+		if(address.length() != 42) {
+			throw new Exception("The length of address is 42.");
+		}
 		address = address.toLowerCase().substring(2);
 		BigInteger value = new BigInteger(address, 16);
 		StringBuilder bban = new StringBuilder(value.toString(36).toUpperCase());
@@ -139,7 +142,7 @@ public class IBAN {
 		return null;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		IBAN iban = new IBAN();
 		// TODO Auto-generated method stub
 		String address = iban.toAddress("XE039RBH0XKV9FZMTH2701Q37FLX10NTWXU");

@@ -74,7 +74,7 @@ public class Wallet {
 		}
 	}
 
-	public WalletResponse createWallet() throws UnreadableWalletException {
+	public WalletResponse createMnemonic() throws UnreadableWalletException {
 		SecureRandom secureRandom = new SecureRandom();
 		long creationTimeSeconds = System.currentTimeMillis() / 1000;
 		DeterministicSeed deterministicSeed = new DeterministicSeed(secureRandom, 128, "", creationTimeSeconds);
@@ -118,7 +118,7 @@ public class Wallet {
 
 	}
 
-	public WalletResponse createWalletChinese() throws UnreadableWalletException, IllegalArgumentException, IOException, MnemonicLengthException {
+	public WalletResponse createChineseMnemonic() throws UnreadableWalletException, IllegalArgumentException, IOException, MnemonicLengthException {
 
 		SecureRandom secureRandom = new SecureRandom();
 		byte[] entropy = new byte[16];
@@ -148,7 +148,7 @@ public class Wallet {
 		return wallet;
 	}
 
-	public WalletResponse createBitValueWallet(String passphrase, String birthday, String date) throws UnreadableWalletException {
+	public WalletResponse createSecurityMnemonic(String passphrase, String birthday, String date) throws UnreadableWalletException {
 
 		SecureRandom secureRandom = new SecureRandom();
 		long creationTimeSeconds = System.currentTimeMillis() / 1000;
@@ -173,7 +173,7 @@ public class Wallet {
 		return wallet;
 	}
 
-	public WalletResponse importFromBitValueWallet(String mnemonic, String passphrase, String birthday, String date) throws UnreadableWalletException {
+	public WalletResponse importFromSecurityMnemonic(String mnemonic, String passphrase, String birthday, String date) throws UnreadableWalletException {
 		long creationTimeSeconds = System.currentTimeMillis() / 1000;
 		DeterministicSeed seed = new DeterministicSeed(mnemonic, null, passphrase, creationTimeSeconds);
 		DeterministicKeyChain chain = DeterministicKeyChain.builder().seed(seed).build();
@@ -360,6 +360,14 @@ public class Wallet {
 		return aes.encrypt(privateKey);
 	}
 
+	public String importAddressFromPrivateKey(String encryptPrivateKey) {
+		AES aes = new AES(this.key);
+		String privateKey = aes.decrypt(encryptPrivateKey);
+		Credentials credentials = Credentials.create(privateKey);
+		String fromAddress = credentials.getAddress();
+		return fromAddress;
+	}
+
 	public class WalletResponse {
 
 		private String address;
@@ -427,22 +435,22 @@ public class Wallet {
 		String privateKey = eth.encryptPrivateKey("189E9468B93459DCBD44183A15853C3C60226041C5A5BC21CB2E18E148B95CD6");
 		System.out.println("加密私钥：" + privateKey);
 
-		WalletResponse token1 = eth.createWallet();
+		WalletResponse token1 = eth.createMnemonic();
 		System.out.println("普通钱包：" + token1.toString());
 		WalletResponse token2 = eth.importFromMnemonic(token1.mnemonic);
 		System.out.println("恢复普通钱包：" + token2.toString());
 
-		WalletResponse chinese = eth.createWalletChinese();
+		WalletResponse chinese = eth.createChineseMnemonic();
 		System.out.println("中文钱包：" + chinese.toString());
 
 		WalletResponse chinese2 = eth.importFromMnemonic(chinese.mnemonic);
 		System.out.println("恢复中文钱包：" + chinese2.toString());
 
-		WalletResponse bvw = eth.createBitValueWallet("password", "19800309", "20170601");
-		System.out.println("比特价值高防钱包:" + bvw.toString());
+		WalletResponse bvw = eth.createSecurityMnemonic("password", "19800309", "20170601");
+		System.out.println("安全高防钱包:" + bvw.toString());
 
-		WalletResponse token3 = eth.importFromBitValueWallet(bvw.mnemonic, "password", "19800309", "20170601");
-		System.out.println("恢复比特价值钱包：" + token3.toString());
+		WalletResponse token3 = eth.importFromSecurityMnemonic(bvw.mnemonic, "password", "19800309", "20170601");
+		System.out.println("恢复安全钱包：" + token3.toString());
 		//
 		// WalletResponse wallet1 = eth.importFromMnemonic("cover ensure daring swift tube crunch muffin snap strike benefit category chest", "password");
 		// System.out.println(wallet1.toString());
