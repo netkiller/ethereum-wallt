@@ -254,7 +254,7 @@ public class EthereumToken extends Ethereum {
 
 		String encodedFunction = FunctionEncoder.encode(function);
 
-		EthGetTransactionCount ethGetTransactionCount = web3.ethGetTransactionCount(fromAddress, DefaultBlockParameterName.PENDING).sendAsync().get();
+		EthGetTransactionCount ethGetTransactionCount = web3.ethGetTransactionCount(fromAddress, DefaultBlockParameterName.PENDING).send();
 		BigInteger nonce = ethGetTransactionCount.getTransactionCount();
 
 		Transaction transaction = Transaction.createFunctionCallTransaction(fromAddress, nonce, this.gasPrice, Transaction.DEFAULT_GAS, this.contractAddress, encodedFunction);
@@ -309,7 +309,7 @@ public class EthereumToken extends Ethereum {
 
 		String encodedFunction = FunctionEncoder.encode(function);
 
-		EthGetTransactionCount ethGetTransactionCount = web3.ethGetTransactionCount(fromAddress, DefaultBlockParameterName.PENDING).sendAsync().get();
+		EthGetTransactionCount ethGetTransactionCount = web3.ethGetTransactionCount(fromAddress, DefaultBlockParameterName.PENDING).send();
 		BigInteger nonce = ethGetTransactionCount.getTransactionCount();
 
 		Transaction transaction = Transaction.createFunctionCallTransaction(fromAddress, nonce, this.gasPrice, Transaction.DEFAULT_GAS, this.contractAddress, encodedFunction);

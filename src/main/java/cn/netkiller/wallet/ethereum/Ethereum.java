@@ -75,7 +75,7 @@ public class Ethereum {
 
 		Credentials credentials = Credentials.create(privateKey);
 
-		TransactionReceipt transactionReceipt = Transfer.sendFunds(web3, credentials, toAddress, BigDecimal.valueOf(value), Convert.Unit.ETHER).send();
+		TransactionReceipt transactionReceipt = Transfer.sendFunds(web3, credentials, toAddress, BigDecimal.valueOf(value), Convert.Unit.ETHER).sendAsync().get();
 
 		return transactionReceipt.getTransactionHash();
 	}
