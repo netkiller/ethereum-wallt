@@ -17,6 +17,7 @@ import rx.Subscription;
 public class EthereumSubscription extends Ethereum {
 
 	private static final int COUNT = 10;
+	private Web3j web3;
 
 	public EthereumSubscription() {
 		// TODO Auto-generated constructor stub

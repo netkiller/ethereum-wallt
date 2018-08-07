@@ -19,7 +19,6 @@ import cn.netkiller.wallet.domain.Token;
 import cn.netkiller.wallet.domain.UserToken;
 import cn.netkiller.wallet.domain.UserToken.UserTokenPrimaryKey;
 import cn.netkiller.wallet.ethereum.Ethereum;
-import cn.netkiller.wallet.ethereum.EthereumToken;
 import cn.netkiller.wallet.pojo.TokenResponse;
 import cn.netkiller.wallet.repository.TokenRepository;
 import cn.netkiller.wallet.repository.UserTokenRepository;
@@ -53,7 +52,7 @@ public class EthereumWalletImpl implements EthereumWallet {
 	}
 
 	public TokenResponse getToken(String contractAddress) {
-		EthereumToken token = new EthereumToken(web3j);
+		Ethereum token = new Ethereum(web3j);
 		token.setContractAddress(contractAddress);
 		TokenResponse tokenResponse = new TokenResponse();
 		tokenResponse.setName(token.getName());
@@ -99,7 +98,7 @@ public class EthereumWalletImpl implements EthereumWallet {
 
 	public Map<String, String> getAllBalance(String address) throws IOException, InterruptedException, ExecutionException {
 		Map<String, String> balances = new LinkedHashMap<String, String>();
-		EthereumToken ethereumToken = new EthereumToken(web3j);
+		Ethereum ethereumToken = new Ethereum(web3j);
 
 		balances.put("ETH", ethereumToken.toEth(ethereumToken.getBalance(address)));
 

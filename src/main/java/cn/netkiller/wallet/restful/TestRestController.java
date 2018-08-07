@@ -54,7 +54,6 @@ public class TestRestController {
 
 	@GetMapping("/pub/test")
 	public String pub(@RequestParam String message) {
-
 		RedisMessagePublisher publisher = new RedisMessagePublisher(stringRedisTemplate, new ChannelTopic("test"));
 		publisher.publish(message);
 		return message;

@@ -61,7 +61,6 @@ public class Wallet {
 
 	public Wallet() {
 
-		// // TODO Auto-generated method stub
 		try {
 			// Web3j web3 = Web3j.build(new
 			// HttpService("https://rinkeby.infura.io/CsS9shwaAab0z7B4LP2d"));
@@ -446,45 +445,45 @@ public class Wallet {
 		WalletResponse chinese2 = eth.importFromMnemonic(chinese.mnemonic);
 		System.out.println("恢复中文钱包：" + chinese2.toString());
 
-		WalletResponse bvw = eth.createSecurityMnemonic("password", "19800309", "20170601");
-		System.out.println("安全高防钱包:" + bvw.toString());
-
-		WalletResponse token3 = eth.importFromSecurityMnemonic(bvw.mnemonic, "password", "19800309", "20170601");
-		System.out.println("恢复安全钱包：" + token3.toString());
+		// WalletResponse bvw = eth.createSecurityMnemonic("password", "19800309", "20170601");
+		// System.out.println("安全高防钱包:" + bvw.toString());
+		//
+		// WalletResponse token3 = eth.importFromSecurityMnemonic(bvw.mnemonic, "password", "19800309", "20170601");
+		// System.out.println("恢复安全钱包：" + token3.toString());
 		//
 		// WalletResponse wallet1 = eth.importFromMnemonic("cover ensure daring swift tube crunch muffin snap strike benefit category chest", "password");
 		// System.out.println(wallet1.toString());
 		//
-		WalletResponse wallet1 = eth.importFromPrivateKey("1a75345d41b9540c625f698c0adab7933d50ecdd8b9aedf37f4160931222bb95");
-		System.out.println("导入私钥钱包：" + wallet1.toString());
-
-		String json = "{\"address\":\"ce90d7410f260045b206acade280e0c4829cfc29\",\"crypto\":{\"cipher\":\"aes-128-ctr\",\"ciphertext\":\"a9bb9ad5fe99af4103899aede464536a95170bc3802b74a2322af31fd8cd2069\",\"cipherparams\":{\"iv\":\"488b6fb9901a828c9c702f6443ef77c3\"},\"kdf\":\"scrypt\",\"kdfparams\":{\"dklen\":32,\"n\":262144,\"p\":1,\"r\":8,\"salt\":\"104911661ca3e6249fddfe2791ea674d1f844bcb48cc29047379b09be78c17e1\"},\"mac\":\"1bff6a597df501aca9cefa42eb01c54195710ce822e1ab3ee1fc90de408a3491\"},\"id\":\"8718aa35-d667-4c96-b064-72f95ae235e1\",\"version\":3}";
-		WalletResponse wallet2 = eth.importFromKeystore(json, "12345678");
-		System.out.println("导入Keystore钱包：" + wallet2.toString());
+		// WalletResponse wallet1 = eth.importFromPrivateKey("1a75345d41b9540c625f698c0adab7933d50ecdd8b9aedf37f4160931222bb95");
+		// System.out.println("导入私钥钱包：" + wallet1.toString());
+		//
+		// String json = "{\"address\":\"ce90d7410f260045b206acade280e0c4829cfc29\",\"crypto\":{\"cipher\":\"aes-128-ctr\",\"ciphertext\":\"a9bb9ad5fe99af4103899aede464536a95170bc3802b74a2322af31fd8cd2069\",\"cipherparams\":{\"iv\":\"488b6fb9901a828c9c702f6443ef77c3\"},\"kdf\":\"scrypt\",\"kdfparams\":{\"dklen\":32,\"n\":262144,\"p\":1,\"r\":8,\"salt\":\"104911661ca3e6249fddfe2791ea674d1f844bcb48cc29047379b09be78c17e1\"},\"mac\":\"1bff6a597df501aca9cefa42eb01c54195710ce822e1ab3ee1fc90de408a3491\"},\"id\":\"8718aa35-d667-4c96-b064-72f95ae235e1\",\"version\":3}";
+		// WalletResponse wallet2 = eth.importFromKeystore(json, "12345678");
+		// System.out.println("导入Keystore钱包：" + wallet2.toString());
 		//
 		// System.out.println("Export to keystore:");
-		WalletResponse keystore = eth.exportToKeystore("123456789", "c01127bd81636483c58472cd000e19fc321c62d5cdf58d8a39dea87be87a3f53");
-		System.out.println("导出 Keystore：" + keystore.toString());
-
-		BigInteger balance = eth.getBalance("0xf56b81a2bcb964D2806071e9Be4289A5559BB0fA");
-		System.out.println("获取 Balance：" + balance);
-
-		String hash = eth.sendTransaction(privateKey, "0xf56b81a2bcb964D2806071e9Be4289A5559BB0fA", 0.0001);
-		System.out.println("ETH转账：" + hash);
-
-		BigInteger tokenBalance = eth.getTokenBalance("0xb94054c174995ae2a9e7fcf6c7924635fba8ecf7", "0x70682386d0dE84B1e549DC3c4305CCB2D261b2a8");
-		System.out.println("代币余额：" + tokenBalance);
-
-		BigInteger tokenBalance1 = eth.getTokenBalance("0xCdF0253d8362d6c3334c8F28A6BFd74c90d03d92", "0x70682386d0dE84B1e549DC3c4305CCB2D261b2a8");
-		System.out.println("转账前：" + tokenBalance1);
-
-		BigInteger amount = Convert.toWei(BigDecimal.valueOf(1), Convert.Unit.ETHER).toBigInteger();
-		// BigInteger amount = BigInteger.valueOf(100000);
-		String txhash = eth.sendTokenTransaction(privateKey, "0xCdF0253d8362d6c3334c8F28A6BFd74c90d03d92", amount, "0x70682386d0dE84B1e549DC3c4305CCB2D261b2a8");
-		System.out.println("交易HASH：" + txhash);
+		// WalletResponse keystore = eth.exportToKeystore("123456789", "c01127bd81636483c58472cd000e19fc321c62d5cdf58d8a39dea87be87a3f53");
+		// System.out.println("导出 Keystore：" + keystore.toString());
 		//
-		tokenBalance1 = eth.getTokenBalance("0xCdF0253d8362d6c3334c8F28A6BFd74c90d03d92", "0x70682386d0dE84B1e549DC3c4305CCB2D261b2a8");
-		System.out.println("转账后：" + tokenBalance1);
+		// BigInteger balance = eth.getBalance("0xf56b81a2bcb964D2806071e9Be4289A5559BB0fA");
+		// System.out.println("获取 Balance：" + balance);
+		//
+		// String hash = eth.sendTransaction(privateKey, "0xf56b81a2bcb964D2806071e9Be4289A5559BB0fA", 0.0001);
+		// System.out.println("ETH转账：" + hash);
+		//
+		// BigInteger tokenBalance = eth.getTokenBalance("0xb94054c174995ae2a9e7fcf6c7924635fba8ecf7", "0x70682386d0dE84B1e549DC3c4305CCB2D261b2a8");
+		// System.out.println("代币余额：" + tokenBalance);
+		//
+		// BigInteger tokenBalance1 = eth.getTokenBalance("0xCdF0253d8362d6c3334c8F28A6BFd74c90d03d92", "0x70682386d0dE84B1e549DC3c4305CCB2D261b2a8");
+		// System.out.println("转账前：" + tokenBalance1);
+		//
+		// BigInteger amount = Convert.toWei(BigDecimal.valueOf(1), Convert.Unit.ETHER).toBigInteger();
+		// // BigInteger amount = BigInteger.valueOf(100000);
+		// String txhash = eth.sendTokenTransaction(privateKey, "0xCdF0253d8362d6c3334c8F28A6BFd74c90d03d92", amount, "0x70682386d0dE84B1e549DC3c4305CCB2D261b2a8");
+		// System.out.println("交易HASH：" + txhash);
+		// //
+		// tokenBalance1 = eth.getTokenBalance("0xCdF0253d8362d6c3334c8F28A6BFd74c90d03d92", "0x70682386d0dE84B1e549DC3c4305CCB2D261b2a8");
+		// System.out.println("转账后：" + tokenBalance1);
 
 	}
 }

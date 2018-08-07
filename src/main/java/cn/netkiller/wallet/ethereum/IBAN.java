@@ -145,6 +145,9 @@ public class IBAN {
 	public static void main(String[] args) throws Exception {
 		IBAN iban = new IBAN();
 		// TODO Auto-generated method stub
+		
+		System.out.println(iban.toAddress("XE12MJF1GRTRXKF29KH9IY8YWTGSOS7UH5T"));
+		
 		String address = iban.toAddress("XE039RBH0XKV9FZMTH2701Q37FLX10NTWXU");
 		System.out.println("IBAN to Address: " + address);
 
