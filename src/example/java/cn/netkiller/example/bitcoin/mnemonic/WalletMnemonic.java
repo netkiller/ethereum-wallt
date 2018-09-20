@@ -12,9 +12,9 @@ public class WalletMnemonic {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		WalletAppKit nomKit = bitcoinCryptoNoP.getKit();
-		Wallet wallet = nomKit.wallet();
-		System.out.println("Current Receive Address: " + wallet.currentReceiveAddress().toString() + "\nIssued Receive Addresses: \n" + wallet.getIssuedReceiveAddresses().toString() + "\nMnemonic: " + wallet.getActiveKeychain().getMnemonicCode().toString() + "\nWallets Balance: " + wallet.getBalance().toPlainString() + " BTC");
+//		WalletAppKit nomKit = bitcoinCryptoNoP.getKit();
+//		Wallet wallet = nomKit.wallet();
+//		System.out.println("Current Receive Address: " + wallet.currentReceiveAddress().toString() + "\nIssued Receive Addresses: \n" + wallet.getIssuedReceiveAddresses().toString() + "\nMnemonic: " + wallet.getActiveKeychain().getMnemonicCode().toString() + "\nWallets Balance: " + wallet.getBalance().toPlainString() + " BTC");
 
 	}
 

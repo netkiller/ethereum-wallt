@@ -16,6 +16,26 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.4.RELEASE</version>
 	</parent>
+
+	<repositories>
+		<repository>
+			<id>mvnrepository</id>
+			<name>mvnrepository</name>
+			<url>http://www.mvnrepository.com/</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -34,6 +54,24 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+			<version>2.3.3.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-jwt</artifactId>
+			<version>1.0.9.RELEASE</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -47,7 +85,7 @@
 		<dependency>
 			<groupId>org.web3j</groupId>
 			<artifactId>core</artifactId>
-			<version>3.4.0</version>
+			<version>3.5.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bitcoinj</groupId>
@@ -72,10 +110,29 @@
 		</dependency>
 
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
+			<groupId>com.github.ipfs</groupId>
+			<artifactId>java-ipfs-api</artifactId>
+			<version>v1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.multiformats</groupId>
+			<artifactId>java-multibase</artifactId>
+			<version>v1.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.multiformats</groupId>
+			<artifactId>java-multiaddr</artifactId>
+			<version>v1.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.multiformats</groupId>
+			<artifactId>java-multihash</artifactId>
+			<version>v1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ipld</groupId>
+			<artifactId>java-cid</artifactId>
+			<version>v1.1.1</version>
 		</dependency>
 	</dependencies>
 	<build>

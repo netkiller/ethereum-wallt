@@ -33,8 +33,6 @@ import cn.netkiller.wallet.service.FcoinService;
 import cn.netkiller.wallet.domain.fcoin.Crawler;
 import cn.netkiller.wallet.domain.fcoin.Fcoin;
 
-import cn.netkiller.wallet.ethereum.contract.NetkillerAdvancedToken;
-
 @Service
 public class FcoinServiceImpl implements FcoinService {
 	private static final Logger logger = LoggerFactory.getLogger(FcoinServiceImpl.class);
@@ -192,52 +190,52 @@ public class FcoinServiceImpl implements FcoinService {
 	@Async
 	public void send(int page, int size) {
 
-		try {
-			BigInteger gasPrice = BigInteger.ZERO;
-			BigInteger gasLimit = BigInteger.ZERO;
-			gasPrice = DefaultGasProvider.GAS_PRICE;
-			gasLimit = DefaultGasProvider.GAS_LIMIT;
-
-			String contractAddress = "0xf083f40599741bc576173b492268972ce661e5ec";
-			String privateKey = "166970EC717B3ECCADABF68AC066558537228DB022FFBDE13A06790967F2BC3A";
-
-			Credentials credentials = Credentials.create(privateKey);
-			NetkillerAdvancedToken contract = NetkillerAdvancedToken.load(contractAddress, web3j, credentials, gasPrice, gasLimit);
-
-			System.out.println(contract.isValid());
-
-			System.out.println(contract.name().send());
-			System.out.println(contract.symbol().send());
-			System.out.println(contract.decimals().send());
-
-			List<Fcoin> fcoins = fcoinRepository.findByAirdrop(false, PageRequest.of(page, size));
-			System.out.println(fcoins);
-			List<String> toAddress = new ArrayList<String>();
-
-			for (Fcoin fcoin : fcoins) {
-				toAddress.add(fcoin.getAddress());
-			}
-
-			System.out.println("---");
-			// String contractAddress = contract.getContractAddress();
-			System.out.println(contract.balanceOf("0x09bd48243AE8E6dF4f14d33921DaEc7827032681").send());
-			System.out.println("---");
-			BigInteger value = Convert.toWei(BigDecimal.valueOf(1), Convert.Unit.ETHER).toBigInteger();
-			TransactionReceipt hash = contract.transferBatch(toAddress, value).sendAsync().get();
-			System.out.println(hash.getTransactionHash());
-			System.out.println("---");
-			System.out.println(contract.balanceOf("0x09bd48243AE8E6dF4f14d33921DaEc7827032681").send());
-			if (hash.getTransactionHash() != null) {
-				for (Fcoin fcoin : fcoins) {
-					fcoin.setAirdrop(true);
-					fcoinRepository.save(fcoin);
-				}
-
-			}
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			BigInteger gasPrice = BigInteger.ZERO;
+//			BigInteger gasLimit = BigInteger.ZERO;
+//			gasPrice = DefaultGasProvider.GAS_PRICE;
+//			gasLimit = DefaultGasProvider.GAS_LIMIT;
+//
+//			String contractAddress = "0xf083f40599741bc576173b492268972ce661e5ec";
+//			String privateKey = "166970EC717B3ECCADABF68AC066558537228DB022FFBDE13A06790967F2BC3A";
+//
+//			Credentials credentials = Credentials.create(privateKey);
+//			NetkillerAdvancedToken contract = NetkillerAdvancedToken.load(contractAddress, web3j, credentials, gasPrice, gasLimit);
+//
+//			System.out.println(contract.isValid());
+//
+//			System.out.println(contract.name().send());
+//			System.out.println(contract.symbol().send());
+//			System.out.println(contract.decimals().send());
+//
+//			List<Fcoin> fcoins = fcoinRepository.findByAirdrop(false, PageRequest.of(page, size));
+//			System.out.println(fcoins);
+//			List<String> toAddress = new ArrayList<String>();
+//
+//			for (Fcoin fcoin : fcoins) {
+//				toAddress.add(fcoin.getAddress());
+//			}
+//
+//			System.out.println("---");
+//			// String contractAddress = contract.getContractAddress();
+//			System.out.println(contract.balanceOf("0x09bd48243AE8E6dF4f14d33921DaEc7827032681").send());
+//			System.out.println("---");
+//			BigInteger value = Convert.toWei(BigDecimal.valueOf(1), Convert.Unit.ETHER).toBigInteger();
+//			TransactionReceipt hash = contract.transferBatch(toAddress, value).sendAsync().get();
+//			System.out.println(hash.getTransactionHash());
+//			System.out.println("---");
+//			System.out.println(contract.balanceOf("0x09bd48243AE8E6dF4f14d33921DaEc7827032681").send());
+//			if (hash.getTransactionHash() != null) {
+//				for (Fcoin fcoin : fcoins) {
+//					fcoin.setAirdrop(true);
+//					fcoinRepository.save(fcoin);
+//				}
+//
+//			}
+//
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }

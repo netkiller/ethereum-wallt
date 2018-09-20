@@ -1,14 +1,18 @@
 package cn.netkiller.wallet.restful;
 
 import java.io.IOException;
+import java.util.Properties;
 import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.web3j.protocol.Web3j;
@@ -66,4 +70,15 @@ public class TestRestController {
 		jsonRedisTemplate.convertAndSend("test", restfulResponse);
 		return restfulResponse;
 	}
+
+	@GetMapping("/pub/json")
+	public RestfulResponse pubJson() {
+		RestfulResponse restfulResponse = new RestfulResponse(true, 0, null, null);
+		jsonRedisTemplate.opsForValue().set("test", restfulResponse);
+		jsonRedisTemplate.convertAndSend("test", restfulResponse);
+		return restfulResponse;
+	}
+
+
+
 }
