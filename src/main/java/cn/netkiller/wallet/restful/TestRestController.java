@@ -63,21 +63,21 @@ public class TestRestController {
 		return message;
 	}
 
-	@GetMapping("/pub/json")
-	public RestfulResponse pubJson() {
-		RestfulResponse restfulResponse = new RestfulResponse(true, 0, null, null);
-		jsonRedisTemplate.opsForValue().set("test", restfulResponse);
-		jsonRedisTemplate.convertAndSend("test", restfulResponse);
-		return restfulResponse;
-	}
-
-	@GetMapping("/pub/json")
-	public RestfulResponse pubJson() {
-		RestfulResponse restfulResponse = new RestfulResponse(true, 0, null, null);
-		jsonRedisTemplate.opsForValue().set("test", restfulResponse);
-		jsonRedisTemplate.convertAndSend("test", restfulResponse);
-		return restfulResponse;
-	}
+//	@GetMapping("/pub/json")
+//	public RestfulResponse pubJson() {
+//		RestfulResponse restfulResponse = new RestfulResponse(true, 0, null, null);
+//		jsonRedisTemplate.opsForValue().set("test", restfulResponse);
+//		jsonRedisTemplate.convertAndSend("test", restfulResponse);
+//		return restfulResponse;
+//	}
+//
+//	@GetMapping("/pub/json")
+//	public RestfulResponse pubJson() {
+//		RestfulResponse restfulResponse = new RestfulResponse(true, 0, null, null);
+//		jsonRedisTemplate.opsForValue().set("test", restfulResponse);
+//		jsonRedisTemplate.convertAndSend("test", restfulResponse);
+//		return restfulResponse;
+//	}
 
 
 

@@ -90,7 +90,14 @@ public class Ethereum {
 		return balance;
 
 	}
+	public String sendTransaction(String toAddress, Double value) throws InterruptedException, IOException, TransactionException, Exception {
 
+		Credentials credentials = Credentials.create(this.privateKey);
+
+		TransactionReceipt transactionReceipt = Transfer.sendFunds(web3, credentials, toAddress, BigDecimal.valueOf(value), Convert.Unit.ETHER).sendAsync().get();
+
+		return transactionReceipt.getTransactionHash();
+	}
 	public String sendTransaction(String privateKey, String toAddress, Double value) throws InterruptedException, IOException, TransactionException, Exception {
 
 		Credentials credentials = Credentials.create(privateKey);
@@ -127,9 +134,7 @@ public class Ethereum {
 		return transactionHash;
 	}
 
-	public String toEth(BigInteger amount) {
-		return Convert.fromWei(amount.toString(), Convert.Unit.ETHER).toPlainString();
-	}
+	
 
 	// private static void decodeMessage(String signedData) {
 	//
@@ -395,6 +400,37 @@ public class Ethereum {
 		return txHash;
 	}
 
+	public String sendTokenTransaction(String privateKey, String toAddress, BigInteger amount, String contractAddress) throws Exception {
+		String txHash = null;
+		Credentials credentials = Credentials.create(privateKey);
+		String fromAddress = credentials.getAddress();
+
+		Function function = new Function("transfer", Arrays.asList(new Address(toAddress), new Uint256(amount)), Arrays.asList(new TypeReference<Bool>() {
+		}, new TypeReference<Bool>() {
+		}));
+
+		String encodedFunction = FunctionEncoder.encode(function);
+
+		EthGetTransactionCount ethGetTransactionCount = web3.ethGetTransactionCount(fromAddress, DefaultBlockParameterName.PENDING).send();
+		BigInteger nonce = ethGetTransactionCount.getTransactionCount();
+
+		//BigInteger gasPrice = this.getGasPrice();
+		BigInteger gasPrice = BigInteger.valueOf(10000000000L);
+		
+		//Transaction transaction = Transaction.createFunctionCallTransaction(fromAddress, nonce, gasPrice, Transaction.DEFAULT_GAS, contractAddress, encodedFunction);
+		//BigInteger gasLimit = this.getEstimateGas(transaction);
+		BigInteger gasLimit = BigInteger.valueOf(100000);
+
+		RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, gasPrice, gasLimit, contractAddress, encodedFunction);
+
+		byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
+		String signedTransactionData = Numeric.toHexString(signedMessage);
+		EthSendTransaction ethSendTransaction = web3.ethSendRawTransaction(signedTransactionData).send();
+		txHash = ethSendTransaction.getTransactionHash();
+
+		return txHash;
+	}
+	
 	public String setApprove(String _spender, BigInteger _amount) throws InterruptedException, ExecutionException, IOException {
 		String txHash = null;
 		Credentials credentials = Credentials.create(this.privateKey);
@@ -496,6 +532,10 @@ public class Ethereum {
 		txHash = ethSendTransaction.getTransactionHash();
 
 		return txHash;
+	}
+
+	public String toEth(BigInteger amount) {
+		return Convert.fromWei(amount.toString(), Convert.Unit.ETHER).toPlainString();
 	}
 
 	public BigDecimal toBigDecimal(BigInteger balance, int decimal) {
